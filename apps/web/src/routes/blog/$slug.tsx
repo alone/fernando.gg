@@ -13,6 +13,7 @@ import {
 	MIN_READ_TIME_MINUTES,
 	READING_WORDS_PER_MINUTE,
 } from "@/lib/constants";
+import { formatDate } from "@/lib/format-date";
 import { trpc } from "@/utils/trpc";
 
 const WORD_SPLIT = /\s+/;
@@ -200,13 +201,7 @@ function BlogPostComponent() {
 						transition={{ duration: 0.4, delay: 0.55 }}
 					>
 						<time className="text-neutral-400">
-							{post.publishedAt
-								? new Date(post.publishedAt).toLocaleDateString("en-US", {
-										year: "numeric",
-										month: "long",
-										day: "numeric",
-									})
-								: ""}
+							{post.publishedAt ? formatDate(post.publishedAt, "long") : ""}
 						</time>
 						<span className="inline-flex items-center gap-1.5 bg-white px-2.5 py-1 text-[10px] text-black tracking-wider">
 							<ClockIcon size={META_ICON_SIZE} weight="bold" />
