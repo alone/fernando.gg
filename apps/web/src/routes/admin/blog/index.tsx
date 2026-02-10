@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 
+import { formatDate } from "@/lib/format-date";
 import { queryClient, trpc, trpcClient } from "@/utils/trpc";
 
 export const Route = createFileRoute("/admin/blog/")({
@@ -106,8 +107,7 @@ function AdminBlogList() {
 								</h2>
 							</div>
 							<p className="mt-1 text-neutral-400 text-xs">
-								{post.slug} &middot;{" "}
-								{new Date(post.createdAt).toLocaleDateString()}
+								{post.slug} &middot; {formatDate(post.createdAt)}
 							</p>
 						</div>
 						<div className="ml-4 flex shrink-0 items-center gap-2">

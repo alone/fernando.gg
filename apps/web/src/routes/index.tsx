@@ -11,6 +11,7 @@ import {
 	HOME_LATEST_POSTS_LIMIT,
 	HOME_LATEST_PROJECTS_LIMIT,
 } from "@/lib/constants";
+import { formatDate } from "@/lib/format-date";
 import { trpc } from "@/utils/trpc";
 
 export const Route = createFileRoute("/")({
@@ -116,10 +117,7 @@ function HomeComponent() {
 							>
 								{latestPost.publishedAt && (
 									<span className="mb-2 block text-neutral-400 text-xs uppercase">
-										{new Date(latestPost.publishedAt).toLocaleDateString(
-											"en-US",
-											{ month: "short", year: "numeric" }
-										)}
+										{formatDate(latestPost.publishedAt, "short")}
 									</span>
 								)}
 								<span className="mb-2 block font-pixel-square text-base">

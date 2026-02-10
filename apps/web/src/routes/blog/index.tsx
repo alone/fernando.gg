@@ -8,6 +8,7 @@ import {
 	BANNER_IMAGE_SRC,
 	BANNER_IMAGE_WIDTH,
 } from "@/lib/constants";
+import { formatDate } from "@/lib/format-date";
 import { trpc } from "@/utils/trpc";
 
 export const Route = createFileRoute("/blog/")({
@@ -43,13 +44,7 @@ function PostList({
 						to="/blog/$slug"
 					>
 						<span className="mb-2 block text-neutral-400 text-xs uppercase">
-							{post.publishedAt
-								? new Date(post.publishedAt).toLocaleDateString("en-US", {
-										year: "numeric",
-										month: "short",
-										day: "numeric",
-									})
-								: "Draft"}
+							{post.publishedAt ? formatDate(post.publishedAt) : "Draft"}
 						</span>
 						<span className="mb-2 block font-pixel-square text-base">
 							{post.title}
