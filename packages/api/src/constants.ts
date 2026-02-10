@@ -1,0 +1,13 @@
+export const SLUG_MAX_LENGTH = 200;
+
+export const PAGINATION_MAX_LIMIT = 100;
+
+export const PROJECT_DEFAULT_PAGE_SIZE = 12;
+
+export const LATEST_PROJECTS_MAX_LIMIT = 10;
+
+export const LATEST_PROJECTS_DEFAULT_LIMIT = 3;
+
+export const BLOG_DEFAULT_PAGE_SIZE = 20;
+
+export const MAX_UPLOAD_SIZE_BYTES = 5 * 1024 * 1024;

@@ -1,0 +1,23 @@
+{
+  "name": "@fernando/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@fernando/db": "workspace:*",
+    "@fernando/env": "workspace:*",
+    "better-auth": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@fernando/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

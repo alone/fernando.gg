@@ -1,0 +1,27 @@
+{
+  "name": "@fernando/api",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.985.0",
+    "@fernando/auth": "workspace:*",
+    "@fernando/db": "workspace:*",
+    "@fernando/env": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "drizzle-orm": "^0.45.1",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@fernando/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
