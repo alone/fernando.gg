@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+// #region agent log
+import { useCallback, useState as useDbgState, useRef } from "react";
+// #endregion
 
 import SiteFooter from "@/components/site-footer";
 import {
@@ -52,8 +55,126 @@ function HomeComponent() {
 	const latestPost = latestPosts?.[0];
 	const projects = latestProjects ?? [];
 
+	// #region agent log
+	const [dbgMessages, setDbgMessages] = useDbgState<string[]>([]);
+	const imgRef = useRef<HTMLImageElement>(null);
+	const dbgLog = useCallback(
+		(loc: string, msg: string, data: Record<string, unknown>) => {
+			const entry = {
+				sessionId: "390f19",
+				location: loc,
+				message: msg,
+				data,
+				timestamp: Date.now(),
+				hypothesisId: String(data.hypothesis ?? "X"),
+			};
+			setDbgMessages((prev) => [
+				...prev,
+				`[${entry.hypothesisId}] ${msg}: ${JSON.stringify(data)}`,
+			]);
+			fetch(
+				"http://127.0.0.1:7568/ingest/545a650a-68f4-479e-8ee4-8c35ef32902a",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"X-Debug-Session-Id": "390f19",
+					},
+					body: JSON.stringify(entry),
+				}
+			).catch(() => {
+				// intentionally empty
+			});
+		},
+		[]
+	);
+	const handleImgLoad = useCallback(
+		(e: React.SyntheticEvent<HTMLImageElement>) => {
+			const img = e.currentTarget;
+			dbgLog("index.tsx:onLoad", "SVG image loaded", {
+				hypothesis: "A,B,D",
+				naturalWidth: img.naturalWidth,
+				naturalHeight: img.naturalHeight,
+				complete: img.complete,
+				currentSrc: img.currentSrc,
+				src: img.src,
+			});
+			setTimeout(() => {
+				if (imgRef.current) {
+					const cs = window.getComputedStyle(imgRef.current);
+					dbgLog("index.tsx:postLoad", "Computed style after load", {
+						hypothesis: "C",
+						opacity: cs.opacity,
+						transform: cs.transform,
+						visibility: cs.visibility,
+						display: cs.display,
+						width: cs.width,
+						height: cs.height,
+					});
+				}
+			}, 2000);
+		},
+		[dbgLog]
+	);
+	const handleImgError = useCallback(
+		(e: React.SyntheticEvent<HTMLImageElement>) => {
+			const img = e.currentTarget;
+			dbgLog("index.tsx:onError", "SVG image failed to load", {
+				hypothesis: "A,D",
+				src: img.src,
+				complete: img.complete,
+			});
+		},
+		[dbgLog]
+	);
+	const ua = typeof navigator !== "undefined" ? navigator.userAgent : "SSR";
+	const isSafari = ua.includes("Safari") && !ua.includes("Chrome");
+	const isIOS =
+		ua.includes("iPhone") || ua.includes("iPad") || ua.includes("iPod");
+	if (dbgMessages.length === 0) {
+		setTimeout(
+			() =>
+				dbgLog("index.tsx:mount", "Component mounted", {
+					hypothesis: "ALL",
+					userAgent: ua,
+					isSafari,
+					isIOS,
+					screenWidth: typeof screen !== "undefined" ? screen.width : 0,
+					screenHeight: typeof screen !== "undefined" ? screen.height : 0,
+					devicePixelRatio:
+						typeof devicePixelRatio !== "undefined" ? devicePixelRatio : 0,
+				}),
+			0
+		);
+	}
+	// #endregion
+
 	return (
 		<div className="min-h-full bg-black text-white">
+			{/* #region agent log */}
+			<div
+				style={{
+					position: "fixed",
+					bottom: 0,
+					left: 0,
+					right: 0,
+					zIndex: 99_999,
+					background: "rgba(0,0,0,0.9)",
+					color: "#0f0",
+					fontSize: "10px",
+					fontFamily: "monospace",
+					maxHeight: "30vh",
+					overflow: "auto",
+					padding: "8px",
+					pointerEvents: "auto",
+				}}
+			>
+				<strong>DEBUG-390f19</strong>
+				{dbgMessages.map((m) => (
+					<div key={m}>{m}</div>
+				))}
+			</div>
+			{/* #endregion */}
 			<section className="relative min-h-[80svh] overflow-hidden px-6 py-16 sm:py-24">
 				<motion.img
 					alt=""
@@ -61,6 +182,11 @@ function HomeComponent() {
 					className="pointer-events-none absolute inset-0 h-full w-full object-cover object-top"
 					height={BANNER_IMAGE_HEIGHT}
 					initial={{ scale: 1.1, opacity: 0 }}
+					// #region agent log
+					onError={handleImgError}
+					onLoad={handleImgLoad}
+					ref={imgRef}
+					// #endregion
 					src={GLOW_IMAGE_SRC}
 					transition={{ duration: 1.2, ease: "easeOut" }}
 					width={BANNER_IMAGE_WIDTH}
