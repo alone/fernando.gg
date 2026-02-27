@@ -34,7 +34,7 @@ export const GLOW_IMAGE_SRC = "/glow.webp";
 
 export const LOGIN_BANNER_IMAGE_SRC = "/login-banner.webp";
 
-export const NOT_FOUND_IMAGE_SRC = "/404.svg";
+export const NOT_FOUND_IMAGE_SRC = "/404.webp";
 
 export const FAVICON_HREF = "/favicon.ico";
 
