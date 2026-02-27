@@ -28,11 +28,11 @@ export const BANNER_IMAGE_WIDTH = 1920;
 
 export const PROJECT_COVER_IMAGE_SIZE = 400;
 
-export const BANNER_IMAGE_SRC = "/banner.svg";
+export const BANNER_IMAGE_SRC = "/banner.webp";
 
-export const GLOW_IMAGE_SRC = "/glow.svg";
+export const GLOW_IMAGE_SRC = "/glow.webp";
 
-export const LOGIN_BANNER_IMAGE_SRC = "/login-banner.svg";
+export const LOGIN_BANNER_IMAGE_SRC = "/login-banner.webp";
 
 export const NOT_FOUND_IMAGE_SRC = "/404.svg";
 
